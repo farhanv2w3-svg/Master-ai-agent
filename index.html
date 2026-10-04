@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agent Factory | Master AI Agent</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>AGENT FACTORY</h1>
+        <p style="text-align: center;">Master AI Agent for Creating and Managing Specialized AI Agents</p>
+        
+        {% if last_result %}
+            <div class="alert {% if last_result.status == 'success' %}alert-success{% else %}alert-error{% endif %}">
+                <strong>{{ last_result.message }}</strong>
+            </div>
+        {% endif %}
+
+        <form action="/generate" method="post" class="input-group">
+            <label for="instruction"><strong>What should I create?</strong></label>
+            <textarea name="instruction" id="instruction" placeholder="e.g. Create a Coding & Debugging Agent, a Website Builder Agent, and a Software Development Agent..." required></textarea>
+            <button type="submit" id="btn-submit" onclick="this.innerHTML='Processing... (This takes a moment)'; this.style.opacity='0.7';">CREATE AGENTS</button>
+        </form>
+
+        <h2>SPECIALIZED AGENTS DASHBOARD</h2>
+        {% if agents %}
+            {% for agent in agents %}
+            <div class="agent-card">
+                <h3>{{ agent.name }} (v{{ agent.version }})</h3>
+                <p><strong>Domain:</strong> {{ agent.domain }}</p>
+                <p><strong>Purpose:</strong> {{ agent.description }}</p>
+                <p><strong>Capabilities:</strong> {{ agent.capabilities }}</p>
+                <p><strong>Status:</strong> <span class="status">{{ agent.status }}</span></p>
+                <p><small>Created: {{ agent.creation_time }} | Path: {{ agent.project_path }}</small></p>
+            </div>
+            {% endfor %}
+        {% else %}
+            <p>No agents registered yet. Use the prompt above to create your first specialized agents.</p>
+        {% endif %}
+    </div>
+</body>
+</html>
